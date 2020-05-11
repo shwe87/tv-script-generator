@@ -13597,7 +13597,7 @@ sequence_length = 4</code></pre>
     
     
     <span class="c1"># return a dataloader</span>
-    <span class="k">return</span> <span class="n">train_loader</span>
+    <span class="k">return</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">valid_loader</span>
 
 <span class="c1"># there is no test for this function, but you are encouraged to create</span>
 <span class="c1"># print statements and tests of your own</span>
@@ -13644,12 +13644,12 @@ tensor([ 33,  26,  22,  39,  16,  28,  11,  43,  30,  12])</code></pre>
 
 
 <span class="n">test_text</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
-<span class="n">t_loader</span> <span class="o">=</span> <span class="n">batch_data</span><span class="p">(</span><span class="n">test_text</span><span class="p">,</span> <span class="n">sequence_length</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">t_loader</span><span class="p">,</span> <span class="n">v_loader</span> <span class="o">=</span> <span class="n">batch_data</span><span class="p">(</span><span class="n">test_text</span><span class="p">,</span> <span class="n">sequence_length</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 
 <span class="n">data_iter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">t_loader</span><span class="p">)</span>
 <span class="n">sample_x</span><span class="p">,</span> <span class="n">sample_y</span> <span class="o">=</span> <span class="n">data_iter</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-<span class="c1">#val_iter = iter(v_loader)</span>
-<span class="c1">#v_x, v_y = val_iter.next()</span>
+<span class="n">val_iter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">v_loader</span><span class="p">)</span>
+<span class="n">v_x</span><span class="p">,</span> <span class="n">v_y</span> <span class="o">=</span> <span class="n">val_iter</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
 
 
 <span class="nb">print</span><span class="p">(</span><span class="n">sample_x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -13657,6 +13657,12 @@ tensor([ 33,  26,  22,  39,  16,  28,  11,  43,  30,  12])</code></pre>
 <span class="nb">print</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sample_y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sample_y</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">v_x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">v_x</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">v_y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">v_y</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13681,19 +13687,32 @@ Remaining: (9, 5)
 Train set: 		(36, 5) 
 Validation set: 	(9, 5)
 torch.Size([10, 5])
-tensor([[  2,   3,   4,   5,   6],
-        [ 24,  25,  26,  27,  28],
-        [ 35,  36,  37,  38,  39],
-        [ 28,  29,  30,  31,  32],
+tensor([[ 28,  29,  30,  31,  32],
+        [  0,   1,   2,   3,   4],
+        [  4,   5,   6,   7,   8],
         [ 31,  32,  33,  34,  35],
-        [ 23,  24,  25,  26,  27],
-        [ 25,  26,  27,  28,  29],
-        [ 27,  28,  29,  30,  31],
-        [ 13,  14,  15,  16,  17],
-        [ 29,  30,  31,  32,  33]])
+        [ 15,  16,  17,  18,  19],
+        [ 12,  13,  14,  15,  16],
+        [ 10,  11,  12,  13,  14],
+        [ 32,  33,  34,  35,  36],
+        [ 11,  12,  13,  14,  15],
+        [  7,   8,   9,  10,  11]])
 
 torch.Size([10])
-tensor([  7,  29,  40,  33,  36,  28,  30,  32,  18,  34])
+tensor([ 33,   5,   9,  36,  20,  17,  15,  37,  16,  12])
+torch.Size([9, 5])
+tensor([[ 40,  41,  42,  43,  44],
+        [ 43,  44,  45,  46,  47],
+        [ 39,  40,  41,  42,  43],
+        [ 44,  45,  46,  47,  48],
+        [ 36,  37,  38,  39,  40],
+        [ 41,  42,  43,  44,  45],
+        [ 42,  43,  44,  45,  46],
+        [ 38,  39,  40,  41,  42],
+        [ 37,  38,  39,  40,  41]])
+
+torch.Size([9])
+tensor([ 45,  48,  44,  49,  41,  46,  47,  43,  42])
 </pre>
 </div>
 </div>
@@ -13759,15 +13778,14 @@ out = output[:, -1]</code></pre>
         <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_dim</span><span class="p">)</span>
           <span class="c1">## TODO: define the layers of the model</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lstm</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LSTM</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_hidden</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_layers</span><span class="p">,</span> 
+        <span class="c1">#                    dropout=self.drop_prob, batch_first=True)</span>
+        <span class="c1">#self.gru = nn.GRU(self.embedding_dim, self.n_hidden, self.n_layers, </span>
                             <span class="n">dropout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">drop_prob</span><span class="p">,</span> <span class="n">batch_first</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         
         <span class="c1">##Fully connected</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_hidden</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_size</span><span class="p">)</span>
         <span class="c1">#self.sig = nn.Sigmoid()</span>
         
-        
-        
-    
     
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nn_input</span><span class="p">,</span> <span class="n">hidden</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -13975,17 +13993,25 @@ out = output[:, -1]</code></pre>
                 <span class="n">val_h</span> <span class="o">=</span> <span class="n">rnn</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
                 <span class="n">val_losses</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="n">rnn</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-                <span class="k">for</span> <span class="n">inputs_v</span><span class="p">,</span> <span class="n">labels_v</span> <span class="ow">in</span> <span class="n">valid_loader</span><span class="p">:</span>
+                
+                
+                <span class="k">for</span> <span class="n">batch_i</span><span class="p">,</span> <span class="p">(</span><span class="n">inputs_v</span><span class="p">,</span> <span class="n">labels_v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">valid_loader</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="c1"># make sure you iterate over completely full batches, only</span>
+                    <span class="n">n_batches_v</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_loader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span><span class="o">//</span><span class="n">batch_size</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">batch_i</span> <span class="o">&gt;</span> <span class="n">n_batches_v</span><span class="p">):</span>
+                        <span class="c1">#print(&quot;Last batch: Going out&quot;)</span>
+                        <span class="k">break</span>
                     <span class="n">val_h</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">each</span><span class="o">.</span><span class="n">data</span> <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">val_h</span><span class="p">])</span>
                     <span class="k">if</span><span class="p">(</span><span class="n">train_on_gpu</span><span class="p">):</span>
                         <span class="n">inputs_v</span><span class="p">,</span> <span class="n">labels_v</span> <span class="o">=</span> <span class="n">inputs_v</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">labels_v</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
                     <span class="n">output</span><span class="p">,</span> <span class="n">val_h</span> <span class="o">=</span> <span class="n">rnn</span><span class="p">(</span><span class="n">inputs_v</span><span class="p">,</span> <span class="n">val_h</span><span class="p">)</span>
                     <span class="n">val_loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span><span class="n">labels_v</span><span class="p">)</span>
+                    <span class="c1">#print(&quot;Validation check.Loss= {}&quot;.format(val_loss))</span>
                     <span class="n">val_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val_loss</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
                 
                 <span class="n">rnn</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Epoch: </span><span class="si">{:&gt;4}</span><span class="s1">/</span><span class="si">{:&lt;4}</span><span class="s1">  Loss: </span><span class="si">{}</span><span class="se">\t\t</span><span class="s1">Val Loss: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">epoch_i</span><span class="p">,</span> <span class="n">n_epochs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">batch_losses</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">val_losses</span><span class="p">)))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Epoch: </span><span class="si">{:&gt;4}</span><span class="s1">/</span><span class="si">{:&lt;4}</span><span class="s1"> Training Loss: </span><span class="si">{}</span><span class="se">\t\t</span><span class="s1">Validation Loss: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">epoch_i</span><span class="p">,</span> <span class="n">n_epochs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">batch_losses</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">val_losses</span><span class="p">)))</span>
                 <span class="n">batch_losses</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="c1"># returns a trained rnn</span>
@@ -14077,7 +14103,7 @@ out = output[:, -1]</code></pre>
 <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">256</span>
 
 <span class="c1"># data loader - do not change</span>
-<span class="n">train_loader</span> <span class="o">=</span> <span class="n">batch_data</span><span class="p">(</span><span class="n">int_text</span><span class="p">,</span> <span class="n">sequence_length</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">)</span>
+<span class="n">train_loader</span><span class="p">,</span> <span class="n">valid_loader</span> <span class="o">=</span> <span class="n">batch_data</span><span class="p">(</span><span class="n">int_text</span><span class="p">,</span> <span class="n">sequence_length</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14175,8 +14201,8 @@ Validation set: 	(178420, 10)
 
 <span class="n">t_start</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>  
 <span class="c1"># training the model</span>
-<span class="n">trained_rnn</span> <span class="o">=</span> <span class="n">train_rnn</span><span class="p">(</span><span class="n">rnn</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">num_epochs</span><span class="p">,</span> <span class="n">show_every_n_batches</span><span class="p">)</span>
-<span class="c1">#trained_rnn = train_rnn_with_validation(rnn, batch_size, optimizer, criterion, num_epochs, show_every_n_batches)</span>
+<span class="c1">#trained_rnn = train_rnn(rnn, batch_size, optimizer, criterion, num_epochs, show_every_n_batches)</span>
+<span class="n">trained_rnn</span> <span class="o">=</span> <span class="n">train_rnn_with_validation</span><span class="p">(</span><span class="n">rnn</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">num_epochs</span><span class="p">,</span> <span class="n">show_every_n_batches</span><span class="p">)</span>
 <span class="n">t_stop</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span> 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training time in seconds: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t_stop</span><span class="o">-</span><span class="n">t_start</span><span class="p">))</span>
 
@@ -14200,27 +14226,18 @@ Validation set: 	(178420, 10)
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Training for 10 epoch(s)...
-Epoch:    1/10    Loss: 4.791890184760094
-
-Epoch:    2/10    Loss: 4.127989189317674
-
-Epoch:    3/10    Loss: 3.8823770400568454
-
-Epoch:    4/10    Loss: 3.7346476030298406
-
-Epoch:    5/10    Loss: 3.626122617789995
-
-Epoch:    6/10    Loss: 3.5312355302079075
-
-Epoch:    7/10    Loss: 3.457887354143469
-
-Epoch:    8/10    Loss: 3.3936217140886233
-
-Epoch:    9/10    Loss: 3.3400383680834325
-
-Epoch:   10/10    Loss: 3.2912824659480986
-
-Training time in seconds: 2284.8762357869996
+Epoch:    1/10   Training Loss: 4.758185926318169		Validation Loss: 4.549340324840326
+Epoch:    2/10   Training Loss: 4.109504845393016		Validation Loss: 4.405995219945908
+Epoch:    3/10   Training Loss: 3.8705887342808194		Validation Loss: 4.398567064055081
+Epoch:    4/10   Training Loss: 3.709228469771983		Validation Loss: 4.443409813889142
+Epoch:    5/10   Training Loss: 3.6086999121899668		Validation Loss: 4.494082340906406
+Epoch:    6/10   Training Loss: 3.5053301659971745		Validation Loss: 4.569654731914915
+Epoch:    7/10   Training Loss: 3.435991256349096		Validation Loss: 4.632496095251763
+Epoch:    8/10   Training Loss: 3.367495426791177		Validation Loss: 4.702692841318832
+Epoch:    9/10   Training Loss: 3.3139912096625124		Validation Loss: 4.743439600385469
+Epoch:   10/10   Training Loss: 3.268631850685062		Validation Loss: 4.804376372318158
+Training time in seconds: 2452.520261705
+Model Trained and Saved
 </pre>
 </div>
 </div>
@@ -14233,17 +14250,6 @@ Training time in seconds: 2284.8762357869996
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>/opt/conda/lib/python3.6/site-packages/torch/serialization.py:193: UserWarning: Couldn&#39;t retrieve source code for container of type RNN. It won&#39;t be checked for correctness upon loading.
   &#34;type &#34; + obj.__name__ + &#34;. It won&#39;t be checked &#34;
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Model Trained and Saved
 </pre>
 </div>
 </div>
@@ -14265,83 +14271,27 @@ Training time in seconds: 2284.8762357869996
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong> 
 I tried the following tunings with the following results:</p>
-<table>
-<thead><tr>
-<th style="text-align:center">hidden_dim</th>
-<th style="text-align:center">n_layers</th>
-<th style="text-align:center">learning_rate</th>
-<th style="text-align:center">sequence_length</th>
-<th style="text-align:center">batch_size</th>
-<th style="text-align:center">Loss at Epoch=1</th>
-<th style="text-align:center">Final Loss</th>
-<th style="text-align:center">Time</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">150</td>
-<td style="text-align:center">2</td>
-<td style="text-align:center">0.01</td>
-<td style="text-align:center">10</td>
-<td style="text-align:center">256</td>
-<td style="text-align:center">4.992785820484161</td>
-<td style="text-align:center">3.4734651802778242</td>
-<td style="text-align:center">1992[s]</td>
-</tr>
-<tr>
-<td style="text-align:center">150</td>
-<td style="text-align:center">2</td>
-<td style="text-align:center">0.001</td>
-<td style="text-align:center">10</td>
-<td style="text-align:center">256</td>
-<td style="text-align:center">4.871149137377739</td>
-<td style="text-align:center">3.4709413443408987</td>
-<td style="text-align:center">1584[s]</td>
-</tr>
-<tr>
-<td style="text-align:center">250</td>
-<td style="text-align:center">2</td>
-<td style="text-align:center">0.001</td>
-<td style="text-align:center">10</td>
-<td style="text-align:center">256</td>
-<td style="text-align:center">4.791890184760094</td>
-<td style="text-align:center">3.2716315966333416</td>
-<td style="text-align:center">2192[s] </td>
-</tr>
-<tr>
-<td style="text-align:center">250</td>
-<td style="text-align:center">2</td>
-<td style="text-align:center">0.003</td>
-<td style="text-align:center">10</td>
-<td style="text-align:center">256</td>
-<td style="text-align:center">4.631403216123581</td>
-<td style="text-align:center">3.3363460504670788</td>
-<td style="text-align:center">2179[s]</td>
-</tr>
-<tr>
-<td style="text-align:center">250</td>
-<td style="text-align:center">2</td>
-<td style="text-align:center">0.001</td>
-<td style="text-align:center">50</td>
-<td style="text-align:center">256</td>
-<td style="text-align:center">4.790262410402298</td>
-<td style="text-align:center">3.2712818097161445</td>
-<td style="text-align:center">8715[s]</td>
-</tr>
-</tbody>
-</table>
-<p>I chose to keep the following configuration:
-hidden_dim = 250
-n_layers = 2
-learning_rate = 0.001
-seq_length = 10
-batch_size = 256</p>
+<h1 id="|-hidden_dim-|-n_layers-|-learning_rate-|-sequence_length-|-batch_size-|-T-Loss-at-Epoch=1--|-Final-T-Loss---------|-Time-|">| hidden_dim | n_layers | learning_rate | sequence_length | batch_size | T Loss at Epoch=1  | Final T Loss         | Time |<a class="anchor-link" href="#|-hidden_dim-|-n_layers-|-learning_rate-|-sequence_length-|-batch_size-|-T-Loss-at-Epoch=1--|-Final-T-Loss---------|-Time-|">&#182;</a></h1><p>:-| :--------: |:-------: | :------------:| :-------------: | :--------: | :-------------:  | :-------------:    | :----:
+1| 150        | 2        | 0.01          | 10              | 256        | 4.992785820484161| 3.4734651802778242 |1992[s]
+2| 150        | 2        | 0.001         | 10              | 256        | 4.871149137377739| 3.4709413443408987 |1584[s]
+3| 250        | 2        | 0.001         | 10              | 256        | 4.791890184760094| 3.2716315966333416 |2192[s] 
+4| 250        | 2        | 0.003         | 10              | 256        | 4.631403216123581| 3.3363460504670788 |2179[s]
+5| 250        | 2        | 0.001         | 50              | 256        | 4.790262410402298| 3.2712818097161445 |8715[s]
+6| 250        | 3        | 0.001         | 10              | 256        | 5.128257709980011| 3.428066899368401  |2524[s]</p>
+<p>I chose to keep the following configuration (#3):</p>
+<ul>
+<li>hidden_dim = 250</li>
+<li>n_layers = 2</li>
+<li>learning_rate = 0.001</li>
+<li>seq_length = 10</li>
+<li>batch_size = 256</li>
+</ul>
 <p>I would have liked to do more testing like increasing-decreasing batch size but that would mean consuming more GPU time....</p>
-<p>When the hidden_dim was 150 with the same parameters chosen as now, the loss was not that bad and the time consumed in the training was also very good compared to what I chose.</p>
+<p>When the hidden_dim was 150 (#2) with the same parameters chosen as now, the loss was not that bad and the time consumed in the training was also very good compared to what I chose.</p>
 <ol>
 <li>Increasing hidden_dim means increasing computational cost but the loss also decreased.</li>
 <li>With the learning rate much higher 0.01, training time also increased.</li>
-<li>The worst escenario here is when I chose the seq_length = 50, the training time increased like almost 4 times than the one I chose at last. However, the loss is not much better than the previous ones.</li>
+<li>The worst escenario here is when I chose the seq_length = 50 (#5), the training time increased like almost 4 times than the one I chose which is  #3. Although, the computational cost was higher, the loss is not better than any other options in this case so it is not worth it.</li>
 </ol>
 
 </div>
@@ -14487,8 +14437,10 @@ batch_size = 256</p>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># run the cell multiple times to get different results!</span>
-<span class="n">gen_length</span> <span class="o">=</span> <span class="mi">400</span> <span class="c1"># modify the length to your preference</span>
-<span class="n">prime_word</span> <span class="o">=</span> <span class="s1">&#39;jerry&#39;</span> <span class="c1"># name for starting the script</span>
+<span class="c1">#gen_length = 400 # modify the length to your preference</span>
+<span class="n">gen_length</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">prime_word</span> <span class="o">=</span> <span class="s1">&#39;kramer&#39;</span>
+<span class="c1">#prime_word = &#39;jerry&#39; # name for starting the script</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">DON&#39;T MODIFY ANYTHING IN THIS CELL THAT IS BELOW THIS LINE</span>
@@ -14512,7 +14464,7 @@ batch_size = 256</p>
 
 
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>/opt/conda/lib/python3.6/site-packages/ipykernel_launcher.py:48: UserWarning: RNN module weights are not part of single contiguous chunk of memory. This means they need to be compacted at every call, possibly greatly increasing memory usage. To compact weights again call flatten_parameters().
+<pre>/opt/conda/lib/python3.6/site-packages/ipykernel_launcher.py:47: UserWarning: RNN module weights are not part of single contiguous chunk of memory. This means they need to be compacted at every call, possibly greatly increasing memory usage. To compact weights again call flatten_parameters().
 </pre>
 </div>
 </div>
@@ -14523,67 +14475,145 @@ batch_size = 256</p>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>jerry: but, i was wondering...
+<pre>kramer: seles agua belli bungie singles hahahaha.
 
-kramer: oh yeah!
+jerry: oh, you know, i&#39;m a friend of mine! i mean, i think i should have been a little bit for the rest of the world deprived.
 
-jerry:(to kramer) hey, hey, hey!!!!
+george: oh, no, i was in my apartment, i&#39;m sure i can get out of town.
 
-elaine: hey.
+kramer: hey, you know what i think?
 
-kramer: hey.
+elaine: oh yeah. i know that.
 
-jerry:(smiling) oh, no, no, no, no. no, you don&#39;t want to be a good one.
+jerry: you can&#39;t believe you, i was wondering if i could be a little chat.
 
-elaine: yeah, i know, i know, but i&#39;m sorry, i don&#39;t want to talk to you.(she exits)
+george: i can&#39;t believe this is what he is.
 
-kramer:(to kramer) hey.(jerry enters)
+jerry: what? what?
 
-elaine: hi elaine
+jerry: i think it&#39;s all right.
 
-jerry: hi jerry, jerry, jerry, elaine!(he exits)
+elaine: what?
 
-elaine: hi jerry!
+elaine:(to george) you know, if i have the first reason of that.
 
-jerry: hey! you know...
+george: oh! i can&#39;t.
 
-jerry: you don&#39;t understand, i was thinking...(to elaine) you know what i&#39;m doing..(she leaves)
+george: i know. i don&#39;t have to be able to be a big one.
 
-george: hey!
+jerry: oh, yeah.
 
-george:(to george) i can&#39;t get my shoes!
+george: oh, i got the jacket, you can see it! i can&#39;t believe it is it.
 
-jerry: well...... you know, you know what you are saying.
+jerry: well, i don&#39;t think so.
 
-george:(to jerry) what are you gonna do?
+elaine:(smiling) you know, i know what you were doing for you to do.
 
-kramer: yeah, yeah.
+george: you know, i guess i was just going to see you later.
 
-george:(smiling) oh, no, no!
+jerry:(on the phone) oh!
 
-george: well, i don&#39;t think so.
+jerry:(to the waitress) yeah, yeah, yeah, well, he didn&#39;t. i was just thinking.
 
-jerry: what did you do?
+kramer: i don&#39;t know what to do, but it&#39;s all over the mind, and i was wondering if they have to talk to him, i can&#39;t.
 
-elaine: well, it&#39;s not a very nice idea of the question.
+george: i don&#39;t know.
 
-george: you know. you should be here, you can get it.
+kramer: yeah.
 
-jerry: well...
+jerry: oh, i know. i was wondering, you should have taken up, and they were going to get away with me.
 
-kramer:(to george) hey jerry.
+elaine: you know what you think?
 
-jerry: i don&#39;t know, i&#39;m gonna go out.
+jerry: no, i don&#39;t have any trouble.(he leaves)
 
-jerry:(looking at jerry) oh, i know, i know you. i mean, if i don&#39;t want to be able to get a cab for the rest of the way.
+jerry:(to george) i know what i was thinking about it.
 
-jerry: i don&#39;t know.
+elaine: oh yeah.
 
-jerry: well, i&#39;m not sure.(he exits)
+jerry: i know, you know.
 
-jerry: you know, it&#39;s not that.
+jerry: i don&#39;t even know.
 
-elaine: you think you could have a pony for the
+jerry: well what?
+
+kramer: yeah, yeah.(to george) you know what you want?
+
+elaine: oh yeah, i was a little nervous.
+
+george: i think i can go back.(george looks around to the other hand)
+
+elaine:(to jerry) i thought you had a job interview.
+
+george: i don&#39;t know, i was just trying to have the money.
+
+george: what?
+
+george: i don&#39;t want it! i&#39;m gonna go see you, i can&#39;t believe this.
+
+george:(to george) you don&#39;t want the money back?
+
+jerry: oh.
+
+elaine: you know, the whole concept, a friend of a bitch.
+
+george: yeah, yeah, yeah, but, i was just wondering, i&#39;m sorry, it&#39;s not that, you have a good time.
+
+george: i know, i know. you know, if you&#39;re gonna be a little bit about the law.
+
+george: oh, you know, i&#39;m not gonna have to do this, but i can&#39;t go to the movies.
+
+elaine: oh!
+
+elaine:(to elaine) what?
+
+kramer: oh yeah...
+
+elaine:(laughing) i&#39;m sorry, i don&#39;t think i can.
+
+elaine: i don&#39;t know.
+
+george: i can&#39;t get that.
+
+george: i thought you didn&#39;t.
+
+jerry: oh, it&#39;s a real good thing.
+
+jerry: what?
+
+george:(smiling, he gets up) you want to see you, jerry?
+
+newman: i don&#39;t want it! i mean, you were going to the hospital, i was in the middle of the car, and i was just wondering if you were gonna be able to do something to the auto.
+
+jerry: i know, i know.
+
+kramer:(still trying to get up) oh, no, i can&#39;t believe that i&#39;m not a little.
+
+jerry: oh, it&#39;s me!(jerry nods)
+
+kramer: oh, hi.
+
+jerry: i don&#39;t even know.
+
+elaine: what do you do? i mean, i don&#39;t know.
+
+kramer: oh, no, i don&#39;t have any trouble.
+
+george: i think it&#39;s all over the wagon.
+
+kramer: oh yeah, yeah...
+
+jerry: what do you think you got the money, you know, you know, if i was in a gage.
+
+jerry: you know, i know.(leaves)
+
+george: oh yeah.(kramer sits on a chair)
+
+elaine: i don&#39;t think you didn&#39;t say it.
+
+elaine: oh, no, no, no...(hangs up)
+
+george: you can&#39;t believe this, i don&#39;t want it. i mean, i think it&#39;s better than this.(to jerry) i know
 </pre>
 </div>
 </div>
